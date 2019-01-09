@@ -4,13 +4,16 @@ import os
 from setuptools import setup
 
 import versioneer
-from pip.download import PipSession
-from pip.req import parse_requirements
+
+
+def parse_requirements(filename):
+    lineiter = (line.strip() for line in open(filename))
+    return [line for line in lineiter if line and not line.startswith("#")]
 
 
 def get_requirements(filename):
     ''' Parse a pip-style requirements.txt file to setuptools format '''
-    install_reqs = parse_requirements(filename, session=PipSession())
+    install_reqs = parse_requirements(filename)
     return [str(ir.req) for ir in install_reqs]
 
 
